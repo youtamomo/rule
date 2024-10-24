@@ -2,7 +2,8 @@ import requests
 
 urls = [
     "https://github.com/AdguardTeam/FiltersRegistry/raw/refs/heads/master/filters/filter_15_DnsFilter/filter.txt",
-    "https://big.oisd.nl"
+    "https://big.oisd.nl",
+    "https://github.com/TG-Twilight/AWAvenue-Ads-Rule/raw/refs/heads/main/AWAvenue-Ads-Rule.txt"
 ]
 
 unique_lines = set()
