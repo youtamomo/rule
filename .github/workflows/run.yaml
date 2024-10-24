@@ -35,12 +35,12 @@ jobs:
         run: |
           ./sing-box-1.10.1-linux-amd64/sing-box rule-set convert --type adguard --output geosite-dnsblock.srs ./temp_filters.txt
 
-      - name: Commit Build Artifacts to Root Directory
+      - name: Commit geosite-dnsblock.srs to Root Directory
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add geosite-dnsblock.srs temp_filters.txt sing-box-1.10.1-linux-amd64/ sing-box.tar.gz
-          git commit -m "Add geosite-dnsblock.srs and other files" || echo "No changes to commit"
+          git add geosite-dnsblock.srs
+          git commit -m "Add geosite-dnsblock.srs" || echo "No changes to commit"
           git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
