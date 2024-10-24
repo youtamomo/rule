@@ -1,4 +1,4 @@
-name: 构建和转换过滤器
+name: Build and Convert Filters
 
 on:
   workflow_dispatch:  
@@ -13,35 +13,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: 检出代码
+      - name: Checkout Code
         uses: actions/checkout@v4
         
-      - name: 安装依赖
+      - name: Install Dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y python3 python3-pip
           python3 -m pip install requests
 
-      - name: 下载并提取 sing-box
+      - name: Download and Extract Sing-box
         run: |
           wget -O sing-box.tar.gz https://github.com/SagerNet/sing-box/releases/download/v1.10.1/sing-box-1.10.1-linux-amd64.tar.gz
           tar -xzvf sing-box.tar.gz
           chmod +x ./sing-box-1.10.1-linux-amd64/sing-box
 
-      - name: 运行 Python 脚本
+      - name: Run Python Script
         run: python3 run.py
 
-      - name: 使用 sing-box 转换
+      - name: Convert Using Sing-box
         run: |
           ./sing-box-1.10.1-linux-amd64/sing-box rule-set convert --type adguard --output geosite-dnsblock.srs ./temp_filters.txt
 
-      - name: 提交构建产物到根目录
+      - name: Commit Build Artifacts to Root Directory
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add geosite-dnsblock.srs
-          git commit -m "添加 geosite-dnsblock.srs" || echo "没有更改可提交"
-          git commit --allow-empty -m "强制提交" || echo "没有更改可提交"
+          git add geosite-dnsblock.srs temp_filters.txt sing-box-1.10.1-linux-amd64/ sing-box.tar.gz
+          git commit -m "Add geosite-dnsblock.srs and other files" || echo "No changes to commit"
           git push origin main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
